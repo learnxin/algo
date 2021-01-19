@@ -172,4 +172,77 @@ public class TestLinkList {
         return slow;
     }
 
+    @Test
+    public void initSentryLinkList(){
+        SentryLinkList linkList = new SentryLinkList();
+        Stream.iterate(0,x->x+1).limit(5).forEach(
+                e->{
+                    SimpleNode simpleNode = new SimpleNode(e, null);
+                    linkList.addHead(simpleNode);
+                }
+        );
+        linkList.printAll();
+    }
+
+    /**
+     * 回文链表判断
+     */
+    @Test
+    public void palindromeTest(){
+        SimpleLinkList linkList = initLinkList();
+
+        Stream.iterate(5,x->x-1).limit(4).forEach(
+                e->{
+                    SimpleNode<Integer> simpleNode = new SimpleNode(Integer.valueOf(e), null);
+                    linkList.addHead(simpleNode);
+                }
+        );
+        linkList.printAll();
+        SimpleNode<Integer> point = linkList.getHead();
+        int i =0;
+        while (point != null){
+            point = point.next;
+            i++;
+        }
+        //找到中间节点(一个或两个)
+        int m = i%2;
+        SimpleNode<Integer> left = linkList.getHead();
+        SimpleNode<Integer> right;
+        int d ;
+        if(m == 1){
+            d = (i+1)/2 -2 ;
+        }else {
+            d = i/2-1;
+        }
+        for (int j = 0; j < d; j++) {
+            left = left.next;
+        }
+        if(m == 1){
+            right = left.next.next;
+        }else {
+            right = left.next;
+        }
+        //链表反转至left;
+        SimpleNode<Integer> head = null;
+        SimpleNode<Integer> current = linkList.getHead();
+        SimpleNode next1 = left.next;
+        while (current != next1){
+            SimpleNode<Integer> next = current.next;
+            current.next = head;
+            head = current;
+            current = next;
+        }
+        while (left != null && right != null) {
+            Integer dataL = left.getData();
+            Integer dataR= right.getData();
+            if(!dataL.equals(dataR)){
+                System.out.println("false");
+                return;
+            }
+            left = left.next;
+            right = right.next;
+        }
+        System.out.println("true");
+    }
+
 }

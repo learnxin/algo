@@ -10,19 +10,19 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public class SimpleNode {
+public class SimpleNode<T> {
 
-    public Object data;
+    public T data;
 
     public SimpleNode next;
 
-    public SimpleNode(Object data, SimpleNode next) {
+    public SimpleNode(T data, SimpleNode next) {
         this.data = data;
         this.next = next;
 
     }
 
-    public SimpleNode(Object data) {
+    public SimpleNode(T data) {
         this.data = data;
         this.next = null;
 
