@@ -1,6 +1,7 @@
 package algo.linklist;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -9,6 +10,7 @@ import lombok.experimental.Accessors;
  * @Date: 2021/1/14 下午10:51
  */
 @Data
+@NoArgsConstructor
 @Accessors(chain = true)
 public class SimpleNode<T> {
 

@@ -1,5 +1,6 @@
 package algo.linklist;
 
+import algo.stack.LinkedStack;
 import org.junit.Test;
 
 import java.util.stream.Stream;
@@ -245,4 +246,37 @@ public class TestLinkList {
         System.out.println("true");
     }
 
+    /**
+     * Lru缓存测试
+     */
+    @Test
+    public void LruCacheLinkedListTest(){
+        LruLinkList lruLinkList = new LruLinkList();
+        lruLinkList.init(5);
+        Stream.iterate(0,x->x+1).limit(4).forEach(
+                lruLinkList::push
+        );
+        lruLinkList.printAll();
+        lruLinkList.push(0);
+        lruLinkList.push(4);
+
+        lruLinkList.push(5);
+
+    }
+
+    /**
+     * 栈测试
+     */
+    @Test
+    public void LinkedStackTest(){
+        LinkedStack lruLinkList = new LinkedStack(4);
+
+        Stream.iterate(0,x->x+1).limit(4).forEach(
+                lruLinkList::push
+        );
+
+        Integer pop = lruLinkList.pop();
+        boolean push = lruLinkList.push(1);
+        boolean push1 = lruLinkList.push(2);
+    }
 }
