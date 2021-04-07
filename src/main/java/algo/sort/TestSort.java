@@ -3,6 +3,8 @@ package algo.sort;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @Author: wangran
@@ -205,12 +207,15 @@ public class TestSort {
      */
     @Test
     public void quickSortTest(){
-        int[] sort={8,3,2,5,4,3,2,1,4};
+
+        Integer[] sort = Stream.iterate(1000000, x -> x - 1).limit(10000).toArray(Integer[]::new);
+
+//        Integer[] sort={8,3,2,5,4,3,2,1,4};
         quickSort(sort,0,sort.length-1);
         System.out.println(Arrays.toString(sort));
     }
 
-    public void quickSort(int[] a,int p,int r){
+    public void quickSort(Integer[] a,int p,int r){
         if(p>=r){
             return;
         }
@@ -220,14 +225,19 @@ public class TestSort {
 
     }
 
-    private int partition(int[] a, int p, int r) {
+    private int partition(Integer[] a, int p, int r) {
         int pivot = a[r];
         int i=p,j=p;
         for (;j<r;j++){
             if(a[j]<pivot){
-                int b = a[j];
-                a[j] = a[i];
-                a[i++] = b;
+                if(i==j){
+                    i++;
+                }else {
+                    int b = a[j];
+                    a[j] = a[i];
+                    a[i++] = b;
+                }
+
             }
         }
 
