@@ -3,6 +3,7 @@ package algo.tree.BinarySearchTree;
 import org.junit.Test;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -36,6 +37,43 @@ public class TestBinaryTree {
     @Test
     public void testDeleteBinaryTree(){
         BinarySearchTree binaryTree = getBinaryTree();
+        int data = 30;
+        binaryTree.deleteNode(data);
+        binaryTree.deleteNode(data);
+        binaryTree.deleteNode(data);
+    }
+
+    /**
+     * 测试支持重复数据的tree
+     * @return
+     */
+    public BinarySearchTreeRelease getBinaryTreeRelease(){
+        BinarySearchTreeRelease binarySearchTree = new BinarySearchTreeRelease();
+        Random random = new Random();
+        Stream.iterate(0, x->x+1).limit(100).forEach(
+                e-> binarySearchTree.insert(random.nextInt(50))
+        );
+        return binarySearchTree;
+    }
+
+    /**
+     * 测试支持重复数据的tree
+     * @return
+     */
+    @Test
+    public void testFindBinaryTreeRelease(){
+        BinarySearchTreeRelease binaryTree = getBinaryTreeRelease();
+        binaryTree.insert(30);
+        List<Node> nodes = binaryTree.find(30);
+    }
+
+    /**
+     * 测试支持重复数据的tree
+     * @return
+     */
+    @Test
+    public void testDeleteBinaryTreeRelease(){
+        BinarySearchTreeRelease binaryTree = getBinaryTreeRelease();
         int data = 30;
         binaryTree.deleteNode(data);
         binaryTree.deleteNode(data);
@@ -117,7 +155,7 @@ public class TestBinaryTree {
 
     @Test
     public void testLevelOrder(){
-        BinarySearchTree binaryTree = getBinaryTree();
+        BinarySearchTreeRelease binaryTree = getBinaryTreeRelease();
         countLevelOrder(binaryTree.getTree());
     }
 
