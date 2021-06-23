@@ -13,6 +13,10 @@ import java.util.stream.Stream;
  */
 public class TestBinaryTree {
 
+    /**
+     * binary tree insert
+     * @return
+     */
     public BinarySearchTree getBinaryTree(){
         BinarySearchTree binarySearchTree = new BinarySearchTree();
         Random random = new Random();
@@ -20,6 +24,22 @@ public class TestBinaryTree {
                 e-> binarySearchTree.insert(random.nextInt(100))
         );
         return binarySearchTree;
+    }
+
+    @Test
+    public void testFindBinaryTree(){
+        BinarySearchTree binaryTree = getBinaryTree();
+        binaryTree.insert(30);
+        Node node = binaryTree.find(30);
+    }
+
+    @Test
+    public void testDeleteBinaryTree(){
+        BinarySearchTree binaryTree = getBinaryTree();
+        int data = 30;
+        binaryTree.deleteNode(data);
+        binaryTree.deleteNode(data);
+        binaryTree.deleteNode(data);
     }
 
     @Test
@@ -101,6 +121,11 @@ public class TestBinaryTree {
         countLevelOrder(binaryTree.getTree());
     }
 
+    /**
+     * 层次遍历二叉树
+     *
+     * @param root
+     */
     public void countLevelOrder(Node root){
         if(root == null){
             return;
@@ -115,6 +140,7 @@ public class TestBinaryTree {
                 printNode(poll);
                 currentQueue.add(poll);
             }
+            //可在此统计总层数
             System.out.println("");
             //push 下一层
             while (!currentQueue.isEmpty()){
@@ -130,7 +156,5 @@ public class TestBinaryTree {
                 return;
             }
         }
-
-
     }
 }
