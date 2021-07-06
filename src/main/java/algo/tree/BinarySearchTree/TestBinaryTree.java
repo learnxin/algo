@@ -171,6 +171,7 @@ public class TestBinaryTree {
         LinkedList<Node> queue = new LinkedList<>();
         queue.add(root);
         LinkedList<Node> currentQueue = new LinkedList<>();
+        outer:
         while (true){
             //打印当前层
             while (!queue.isEmpty()){
@@ -189,10 +190,11 @@ public class TestBinaryTree {
                 if(poll.getRight() != null){
                     queue.add(poll.getRight());
                 }
+                if(currentQueue.isEmpty()&&queue.isEmpty()) {
+                    break outer;
+                }
             }
-            if(queue.isEmpty()){
-                return;
-            }
+
         }
     }
 }
