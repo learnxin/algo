@@ -1,4 +1,4 @@
-package algo.tree.BinarySearchTree;
+package algo.tree.binarySearchTree;
 
 import org.junit.Test;
 
