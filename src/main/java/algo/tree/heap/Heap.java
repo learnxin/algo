@@ -32,14 +32,32 @@ public class Heap {
         }
         a[++count] = data;
         //自下往上堆化 heapify i 为下标
-        int i = count;
-        //父节点
-        while (i > 1){
-            if(a[i/2] < a[i]){
-                swap(a,i,i/2);
-                i = i/2;
+        heapifyUp(a,count);
+//        int i = count;
+//        //父节点
+//        while (i > 1){
+//            if(a[i/2] < a[i]){
+//                swap(a,i,i/2);
+//                i = i/2;
+//            }
+//        }
+    }
+
+    /**
+     * 自下而上进行堆化
+     */
+    private void heapifyUp(int[] a,int i){
+        int ele = a[i];
+        while (i>1){
+            int parent = i/2;
+            int e = a[parent];
+            if(e >= ele){
+                break;
             }
+            a[i] = e;
+            i = parent;
         }
+        a[i] = ele; //找到最终位置是再赋值
     }
 
     /**
@@ -65,10 +83,12 @@ public class Heap {
 
     }
 
+    //自上而下堆化
     public static void heapify(int[] a, int i, int count) {
+        int ele = a[i];
+        int point = i;
         while (true){
-            int point = i;
-            if(2*i<=count && a[i]<a[2*i]){
+            if(2*i<=count && ele<a[2*i]){
                 point = 2*i;
             }
             if(2*i+1<=count && a[point]<a[2*i+1]){
@@ -77,10 +97,11 @@ public class Heap {
             if(point == i){
                 break;
             }
-            swap(a,i,point);
+            a[i] = a[point];
+//            swap(a,i,point);
             i = point;
         }
-
+        a[point] = ele;
     }
 
     /**
