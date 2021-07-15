@@ -132,6 +132,8 @@ public class TestBinaryTree {
     /**
      * 层次遍历二叉树
      *
+     * 类似广度优先搜索
+     * 添加求总层数的逻辑
      * @param root
      */
     public static void levelOrder(Node root) {
@@ -140,8 +142,15 @@ public class TestBinaryTree {
         }
         LinkedList<Node> queue = new LinkedList<>();
         queue.add(root);
+        //记录当前层已出队数量
+        int front = 0;
+        //记录当前层数量
+        int behind = queue.size();
+        //记录层数
+        int floor = 0;
         while (!queue.isEmpty()) {
             Node currentNode = queue.poll();
+            front++;
             System.out.print(currentNode.getData() + " ");
             if (currentNode.getLeft() != null) {
                 queue.add(currentNode.getLeft());
@@ -149,14 +158,40 @@ public class TestBinaryTree {
             if (currentNode.getRight() != null) {
                 queue.add(currentNode.getRight());
             }
+            if(front == behind){
+                //进入下一层
+                floor++;
+                front = 0;
+                behind = queue.size();
+                System.out.println("");
+            }
         }
+        System.out.println("floor = " + floor);
     }
 
-
+    /**
+     * 求二叉树高度/层数，等于左右子树高度较大者+1
+     * 此处采用分治/深度优先递归
+     */
+    public static int getTreeFloor(Node root) {
+        if(root == null){
+            return 0;
+        }
+        if(root.left == null && root.right == null){
+            return 1;
+        }
+        //获取右子树高度
+        int rFloor = getTreeFloor(root.right);
+        //获取左子树高度
+        int lFloor = getTreeFloor(root.left);
+        return Math.max(rFloor,lFloor)+1;
+    }
     @Test
     public void testLevelOrder(){
         BinarySearchTreeRelease binaryTree = getBinaryTreeRelease();
         countLevelOrder(binaryTree.getTree());
+        levelOrder(binaryTree.getTree());
+        int treeFloor = getTreeFloor(binaryTree.getTree());
     }
 
     /**
