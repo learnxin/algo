@@ -29,15 +29,14 @@ public class BruteForce {
         char[] mchars = strm.toCharArray();
         //从主串下标0开始匹配
         for (int i = 0; i < nchars.length; i++) {
-            boolean flag = true;
             //匹配模式串长度的chars
-            for (int j = 0; j <mchars.length; j++) {
+            int j = 0;
+            for (; j <mchars.length; j++) {
                 if(mchars[j] != nchars[i+j]){
-                    flag = false;
                     break;
                 }
             }
-            if (flag){
+            if (j == mchars.length){
                 return i;
             }
         }

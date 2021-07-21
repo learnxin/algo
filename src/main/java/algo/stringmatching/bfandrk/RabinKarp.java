@@ -5,7 +5,7 @@ import org.junit.Test;
 /**
  * @Author: wangran
  * @Description: Rabin-Karp String matching algorithm
- * 可以视为对bf算法的优化 o(n) 匹配主串和模式串的hash值，其中hash算法的设计比较重要；此处hash算法有溢出风险(Long)
+ * 可以视为对bf算法的优化 o(n) 匹配主串和模式串的hash值，其中hash算法的设计比较重要；此处hash算法可能超过了计算机中整型数据可以表示的范围(Long)
  * @Date: 2021/7/20 上午11:20
  */
 public class RabinKarp {
@@ -35,6 +35,7 @@ public class RabinKarp {
 
     /**
      * h[i-1] 对应 s[i-1]~s[i+mlength-2]的hash值
+     * 此处以26进制数表示字符串，可能超过了计算机中整型数据可以表示的范围
      * h[i]=(h[i-1]-(s[i-1]-'a')*26^m-1)*26 + (s[i+m-1]-a)*26^0
      * @param strn
      * @param mlength
