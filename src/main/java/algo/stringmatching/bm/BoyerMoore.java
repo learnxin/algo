@@ -91,6 +91,10 @@ public class BoyerMoore {
      * bc-(hash)->bc[] hash部分为ascii码值
      *
      * 若字串字符集较多则会导致此数组会很大，空间复杂度很高,内存紧张时可只使用gs原则
+     * 但String strn = "abcdefg";
+     *         String strm = "de";
+     *         时匹配不上，因为不存在好后缀，每次后移m，错过了匹配的情况
+     * 看来要手动查询坏字符最后出现的位置，或回归bf往后移一位
      */
     private void generateBC(char[] mc,int m,int[] bc){
         //init bc[]
