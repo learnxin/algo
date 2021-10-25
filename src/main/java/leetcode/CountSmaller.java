@@ -35,6 +35,9 @@ import java.util.stream.Collectors;
 public class CountSmaller {
     public int[] index;
     public int[] result;
+    //重复申请临时数组比较耗时
+    public int[] temp;
+    public int[] tempIndex;
     @Test
     public void reversePairs(){
         int[] nums = {5,2,6,1};
@@ -50,6 +53,8 @@ public class CountSmaller {
          * [3,1,0,2]
          */
         result = new int[nums.length];
+        temp = new int[nums.length];
+        tempIndex = new int[nums.length];
         for (int i = 0; i < index.length; i++) {
             index[i] = i;
         }
@@ -74,24 +79,25 @@ public class CountSmaller {
     }
     // [4, 5, 6, 8][1, 2, 2, 3, 3,]
     private void merge(int[] nums, int p, int q, int r) {
-        int[] temp = new int[r-p+1];
-        int[] tempIndex = new int[r-p+1];
-        int i = p,j=q+1,k=0;
+        int i = p,j=q+1,k=p;
         while (i<=q&&j<=r){
             if(nums[i]<=nums[j]){
+                //j-q-1 为此时从后array所取出的元素数
+                result[index[i]] += (j-q-1);
                 tempIndex[k] = index[i];
                 temp[k++] = nums[i++];
             }else {
-//                result[index[i]] += q-i+1;
-                for (int l = i; l <=q ; l++) {
-                    result[index[l]]++;
-                }
+                //i及以后全都+1  计算result时使用递归，效率太低
+//                for (int l = i; l <=q ; l++) {
+//                    result[index[l]]++;
+//                }
                 tempIndex[k] = index[j];
                 temp[k++] = nums[j++];
             }
         }
         while (i<=q){
-            result[index[i]] += r-j+1;
+//            result[index[i]] += r-j+1; //此行无用 后一数组已空 此时 j= r+1
+            result[index[i]] += (j-q-1);
             tempIndex[k] = index[i];
             temp[k++]= nums[i++];
         }
@@ -99,9 +105,9 @@ public class CountSmaller {
             tempIndex[k] = index[j];
             temp[k++]= nums[j++];
         }
-        for (int l = 0; l < k; l++) {
-            index[p+l] = tempIndex[l];
-            nums[p+l] = temp[l];
+        for (int l = p; l <= r; l++) {
+            index[l] = tempIndex[l];
+            nums[l] = temp[l];
         }
     }
 }

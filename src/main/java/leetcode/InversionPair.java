@@ -57,7 +57,7 @@ public class InversionPair {
             }
         }
         while (i<=q){
-            num += r-j+1;
+//            num += r-j+1; //此行无用 后一数组已空 此时 j= r+1
             temp[k++]= nums[i++];
         }
         while (j<=r){
