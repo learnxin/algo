@@ -63,6 +63,7 @@ public class CountSmaller {
         for (int num : result) {
             list.add(num);
         }
+//        int[] ints = Arrays.stream(result).distinct().sorted().toArray(); //数组去重加排序
         return list;
     }
 
