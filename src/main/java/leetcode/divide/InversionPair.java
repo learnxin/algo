@@ -1,4 +1,4 @@
-package leetcode;
+package leetcode.divide;
 
 import org.junit.Test;
 
