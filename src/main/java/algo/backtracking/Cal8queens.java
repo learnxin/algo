@@ -25,9 +25,6 @@ public class Cal8queens {
         for (int column = 0; column < 8; column++) {
 
             if(checkRow(row,column)){
-                if(row==3&&column==5){
-                    System.out.print("");
-                }
                 queens[row] = column;
                 calOneQueen(row+1);
             }
