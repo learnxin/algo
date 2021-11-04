@@ -3,8 +3,6 @@ package algo.backtracking;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -37,7 +35,6 @@ public class SolveSudoku {
                 {'.','.','.','4','1','9','.','.','5'},
                 {'.','.','.','.','8','.','.','7','9'}};
         solveSudoku(board);
-        System.out.println(Arrays.deepToString(board));
     }
 
     private boolean valid = false;
@@ -63,11 +60,17 @@ public class SolveSudoku {
         int x = next.i;
         int y = next.j;
         for (int i = 1; i <= 9 && !valid; i++) {
+            if(x==8&& y ==6 && i == 1){
+                System.out.print("");
+            }
             if(checkPoint(i,x,y,board)){
                 board[x][y] = Character.forDigit(i,10);
                 setPoint(n+1,points,board);
                 //当回溯到当前递归层时
-                int max = Math.max(n - 1, 0);
+                if(valid){
+                    return;
+                }
+                int max = Math.max(n , 0);
                 board[points.get(max).i][points.get(max).j] = '.';
             }
         }
