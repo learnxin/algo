@@ -3,6 +3,7 @@ package algo.backtracking;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,12 +18,20 @@ import java.util.List;
  * 数字 1-9 在每一列只能出现一次。
  * 数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。（请参考示例图）
  *
+ * 优化点1.初版实现在校验是不断遍历数组，实际上可以使用三个boolean数组记录三个校验维度的情况
+ *
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/sudoku-solver
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  * @Date: 2021/11/3 下午10:37
  */
 public class SolveSudoku {
+
+    private boolean[][] rows = new boolean[9][10];
+    private boolean[][] columns = new boolean[9][10];
+    private boolean[][][] blocks = new boolean[3][3][10];
+    private boolean valid = false;
+
     @Test
     public void solveSudokuTest(){
         char[][] board = new char[][]{{'5','3','.','.','7','.','.','.','.'},
@@ -35,15 +44,20 @@ public class SolveSudoku {
                 {'.','.','.','4','1','9','.','.','5'},
                 {'.','.','.','.','8','.','.','7','9'}};
         solveSudoku(board);
+        System.out.println(Arrays.deepToString(board));
     }
 
-    private boolean valid = false;
     public void solveSudoku(char[][] board) {
         List<Point> points = new ArrayList<>();
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j] == '.'){
                     points.add(new Point(i,j));
+                }else {
+                    int num = Character.getNumericValue(board[i][j]);
+                    rows[i][num] = true;
+                    columns[j][num] = true;
+                    blocks[i/3][j/3][num] =true;
                 }
             }
         }
@@ -60,18 +74,15 @@ public class SolveSudoku {
         int x = next.i;
         int y = next.j;
         for (int i = 1; i <= 9 && !valid; i++) {
-            if(x==8&& y ==6 && i == 1){
-                System.out.print("");
-            }
-            if(checkPoint(i,x,y,board)){
+            if(!rows[x][i] &&!columns[y][i]&&!blocks[x/3][y/3][i]){
                 board[x][y] = Character.forDigit(i,10);
+                rows[x][i] = columns[y][i]=blocks[x/3][y/3][i] = true;
                 setPoint(n+1,points,board);
                 //当回溯到当前递归层时
                 if(valid){
                     return;
                 }
-                int max = Math.max(n , 0);
-                board[points.get(max).i][points.get(max).j] = '.';
+                rows[x][i] = columns[y][i]=blocks[x/3][y/3][i] = false;
             }
         }
 
