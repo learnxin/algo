@@ -7,7 +7,20 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 位运算优化数独解法
+ *
+ * 位运算优化数独解法，
+ * 在方法一中，我们使用了长度为 9 的数组表示每个数字是否出现过。我们同样也可以借助位运算，仅使用一个整数表示每个数字是否出现过。
+ *
+ *
+ * 我们可以顺着方法二的思路继续优化下去：
+ *
+ * 如果一个空白格只有唯一的数可以填入，也就是其对应的 b（此处b为mask） 值和 b−1 进行按位与运算后得到 0（即 b 中只有一个二进制位为 1）。此时，我们就可以确定这个空白格填入的数，而不用等到递归时再去处理它。
+ * 这样一来，我们可以不断地对整个数独进行遍历，将可以唯一确定的空白格全部填入对应的数。随后我们再使用与方法二相同的方法对剩余无法唯一确定的空白格进行递归 + 回溯。
+ *
+ * 作者：LeetCode-Solution
+ * 链接：https://leetcode-cn.com/problems/sudoku-solver/solution/jie-shu-du-by-leetcode-solution/
+ * 来源：力扣（LeetCode）
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
  */
 public class SolveSudokuSolution {
     private int[] line = new int[9];
@@ -35,16 +48,41 @@ public class SolveSudokuSolution {
     public void solveSudoku(char[][] board) {
         for (int i = 0; i < 9; ++i) {
             for (int j = 0; j < 9; ++j) {
-                if (board[i][j] == '.') {
-                    spaces.add(new int[]{i, j});
-                } else {
                     int digit = board[i][j] - '0' - 1;
                     flip(i, j, digit);
+            }
+        }
+        while (true) {
+            boolean modified = false;
+            for (int i = 0; i < 9; ++i) {
+                for (int j = 0; j < 9; ++j) {
+                    if (board[i][j] == '.') {
+                        int mask = ~(line[i] | column[j] | block[i / 3][j / 3]) & 0x1ff;
+                        //对应的 b（此处b为mask） 值和 b−1 进行按位与运算后得到 0（即 b 中只有一个二进制位为 1）此时就可以确认填入的值
+                        if ((mask & (mask - 1)) == 0) {
+                            int digit = Integer.bitCount(mask - 1);
+                            flip(i, j, digit);
+                            board[i][j] = (char) (digit + '0' + 1);
+                            modified = true;
+                        }
+                    }
+                }
+            }
+            if (!modified) {
+                break;
+            }
+        }
+
+        for (int i = 0; i < 9; ++i) {
+            for (int j = 0; j < 9; ++j) {
+                if (board[i][j] == '.') {
+                    spaces.add(new int[]{i, j});
                 }
             }
         }
 
         dfs(board, 0);
+
     }
 
     public void dfs(char[][] board, int pos) {
