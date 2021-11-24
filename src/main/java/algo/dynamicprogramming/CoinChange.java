@@ -18,6 +18,8 @@ public class CoinChange {
     @Test
     public void  coinChangeTest(){
         System.out.println(min(9));
+        minBackTracking(0,0);
+        System.out.println(min);
     }
 
     /**
@@ -33,6 +35,39 @@ public class CoinChange {
             return 1;
         }
         return Math.min(min(n-5),Math.min(min(n-1),min(n-3)))+1;
+    }
+
+    /**
+     *回溯+备忘录
+     * @param i 步骤
+     * @param m 钱数
+     * @return
+     */
+    int min = 0;
+    int[] memo = new int[9+1];
+    public void minBackTracking(int i,int m){
+        memo[m] = i;
+        if(m==9){
+            if(min == 0 ){
+                min = i;
+            }else if(i<min){
+                min = i;
+            }
+            return;
+        }
+        if(memo[m+1]==0||memo[m+1]>i+1){
+            minBackTracking(i+1,m+1);
+        }
+
+        if(m+3<9&&(memo[m+3]==0||memo[m+3]>i+1)){
+            minBackTracking(i+1,m+3);
+        }
+
+        if(m+5<9&&(memo[m+5]==0||memo[m+5]>i+1)){
+            minBackTracking(i+1,m+5);
+        }
+
+
     }
 
     /**
