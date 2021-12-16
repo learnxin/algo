@@ -2,6 +2,8 @@ package algo.dynamicprogramming;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 /**
  * @Author: wangran
  * @Description: 给你两个单词 word1 和 word2，请你计算出将 word1 转换成 word2 所使用的最少操作数 。
@@ -24,7 +26,7 @@ import org.junit.Test;
 public class EditDistance {
     @Test
     public void test(){
-        int i = minDistance("horse", "ros");
+        int i = minDistance("intention", "execution");
         System.out.println(i);
     }
 
@@ -34,25 +36,30 @@ public class EditDistance {
         char[] b = word2.toCharArray();
 
         //有二维数组min[i][j] [0][0]认为为空串 注意次数组填写的是[i][j]匹配完的结果而不是上一次的传值
-        int[][] min = new int[a.length+1][b.length+1];
-        //初始化数据 第0行、第0列对应直接全插入的场景
-        for (int k = 0; k <= a.length; k++) {
-            min[k][0] = k;
-        }
+        //运算是只涉及当前行和上一行，故最多初始化两行
+        int row = Math.min(a.length + 1, 2);
+        int[][] min = new int[row][b.length+1];
+        //初始化数据 第0行对应空串直接全插入的场景
         for (int k = 0; k <= b.length; k++) {
             min[0][k] = k;
         }
-        for (int k = 1; k < min.length; k++) {
-            for (int l = 1; l < min[k].length; l++) {
+        for (int k = 1; k < a.length+1; k++) {
+            //第二行覆盖第一行
+            if (k>1){
+                System.arraycopy(min[1],0,min[0],0,b.length+1);
+            }
+            //需要初始化第一列数据
+            min[1][0] = k;
+            for (int l = 1; l < b.length+1; l++) {
                 if(a[k-1] == b[l-1]){
-                    min[k][l] = getMin(min[k-1][l]+1,min[k][l-1]+1,min[k-1][l-1]);
+                    min[1][l] = getMin(min[0][l]+1,min[1][l-1]+1,min[0][l-1]);
                 }else {
-                    min[k][l] = getMin(min[k-1][l]+1,min[k][l-1]+1,min[k-1][l-1]+1);
+                    min[1][l] = getMin(min[0][l]+1,min[1][l-1]+1,min[0][l-1]+1);
                 }
             }
         }
 
-        return min[a.length][b.length];
+        return min[row-1][b.length];
     }
 
     private int getMin(int a,int b, int c){
