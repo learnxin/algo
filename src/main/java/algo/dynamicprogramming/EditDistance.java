@@ -37,29 +37,31 @@ public class EditDistance {
 
         //有二维数组min[i][j] [0][0]认为为空串 注意次数组填写的是[i][j]匹配完的结果而不是上一次的传值
         //运算是只涉及当前行和上一行，故最多初始化两行
-        int row = Math.min(a.length + 1, 2);
-        int[][] min = new int[row][b.length+1];
+        //此时只使用一个一维数组，和一个变量保存leftTop即可
+        int[] min = new int[b.length+1];
         //初始化数据 第0行对应空串直接全插入的场景
         for (int k = 0; k <= b.length; k++) {
-            min[0][k] = k;
+            min[k] = k;
         }
+        //临时变量用于保存[i-1][j-1]的数据
+        int temp ;
         for (int k = 1; k < a.length+1; k++) {
-            //第二行覆盖第一行
-            if (k>1){
-                System.arraycopy(min[1],0,min[0],0,b.length+1);
-            }
-            //需要初始化第一列数据
-            min[1][0] = k;
+            //需要初始化第一列数据,初始化temp
+            temp = min[0];
+            min[0] = k;
             for (int l = 1; l < b.length+1; l++) {
+                int leftTop = temp;
+                int top = min[l];
+                int left =  min[l-1];
+                temp = min[l];
                 if(a[k-1] == b[l-1]){
-                    min[1][l] = getMin(min[0][l]+1,min[1][l-1]+1,min[0][l-1]);
+                    min[l] = getMin(left+1,top+1,leftTop);
                 }else {
-                    min[1][l] = getMin(min[0][l]+1,min[1][l-1]+1,min[0][l-1]+1);
+                    min[l] = getMin(left+1,top+1,leftTop+1);
                 }
             }
         }
-
-        return min[row-1][b.length];
+        return min[b.length];
     }
 
     private int getMin(int a,int b, int c){
