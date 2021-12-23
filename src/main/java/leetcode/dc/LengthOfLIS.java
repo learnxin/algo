@@ -1,4 +1,4 @@
-package algo.dynamicprogramming;
+package leetcode.dc;
 
 import org.junit.Test;
 
